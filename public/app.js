@@ -203,7 +203,26 @@ function validateStep(idx) {
 }
 
 // ── Photos ────────────────────────────────────────────────────────
-const photos = []; // [{name, b64}]
+const photos = []; // [{name, b64, step}]
+const stepPhotoCounters = {};
+
+async function addStepPhotos(event, stepId) {
+  for (const file of event.target.files) {
+    const b64 = await fileToB64(file);
+    stepPhotoCounters[stepId] = (stepPhotoCounters[stepId] || 0) + 1;
+    const idx = photos.length;
+    const fname = `${stepId.replace('step-','s')}_${String(stepPhotoCounters[stepId]).padStart(2,'0')}.jpg`;
+    photos.push({ name: fname, b64 });
+    const grid = document.getElementById('photos-' + stepId);
+    if (grid) {
+      const div = document.createElement('div');
+      div.className = 'photo-thumb';
+      div.innerHTML = `<img src="data:image/jpeg;base64,${b64}"><button class="remove" onclick="removePhoto(${idx})">×</button>`;
+      grid.appendChild(div);
+    }
+  }
+  event.target.value = '';
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('photo-input').addEventListener('change', async e => {

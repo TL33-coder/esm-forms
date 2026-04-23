@@ -249,6 +249,32 @@ textarea { min-height: 80px; resize: vertical; }
   margin: 20px 0;
 }
 
+/* Inline photo button */
+.inline-photos-wrap { margin-top: 4px; }
+.inline-photo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--blue-light);
+  color: var(--blue);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--blue);
+}
+.inline-photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.inline-photo-grid .photo-thumb {
+  width: 80px;
+  height: 80px;
+}
+
 /* Success */
 .success-wrap {
   display: flex;

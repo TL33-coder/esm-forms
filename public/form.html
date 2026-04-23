@@ -28,7 +28,6 @@
   <div class="card">
     <h2>Site Details</h2>
     <div class="section-num">Start here</div>
-
     <div class="field">
       <label>Inspection Date <span class="req">*</span></label>
       <input type="date" id="visit_date" required>
@@ -63,7 +62,6 @@
   <div class="card">
     <h2>Paths of Travel to Exits</h2>
     <div class="section-num">Section 1.6</div>
-
     <div class="field">
       <label>Compliant? <span class="req">*</span></label>
       <div class="seg green" id="seg-pte">
@@ -73,7 +71,6 @@
         <label for="pte-n">Non-Compliant</label>
       </div>
     </div>
-
     <div class="conditional" id="cond-pte">
       <div class="field">
         <label>Problems Identified</label>
@@ -88,10 +85,17 @@
         <input type="date" id="pte_rect_date">
       </div>
     </div>
-
     <div class="field">
       <label>Comments</label>
       <textarea id="pte_comments" placeholder="Additional comments (optional)"></textarea>
+    </div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-2')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-2"></div>
     </div>
   </div>
 </div>
@@ -101,7 +105,6 @@
   <div class="card">
     <h2>Discharge from Exits</h2>
     <div class="section-num">Section 2.2</div>
-
     <div class="field">
       <label>Gate Sign Displayed? <span class="req">*</span></label>
       <div class="seg green" id="seg-gate">
@@ -113,7 +116,6 @@
         <label for="gate-na">N/A</label>
       </div>
     </div>
-
     <div class="field">
       <label>Problems Identified</label>
       <textarea id="dfe_problems" placeholder="Describe any problems…"></textarea>
@@ -132,6 +134,14 @@
       <label>Comments</label>
       <textarea id="dfe_comments" placeholder="Additional comments (optional)"></textarea>
     </div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-3')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-3"></div>
+    </div>
   </div>
 </div>
 
@@ -140,7 +150,6 @@
   <div class="card">
     <h2>Doors Other than Smoke/Fire</h2>
     <div class="section-num">Section 2.6</div>
-
     <div class="field">
       <label>Compliant? <span class="req">*</span></label>
       <div class="seg green">
@@ -161,7 +170,6 @@
         <label for="dop-na">N/A</label>
       </div>
     </div>
-
     <div class="conditional" id="cond-doors">
       <div class="field">
         <label>Problems Identified</label>
@@ -180,6 +188,14 @@
       <label>Comments</label>
       <textarea id="doors_comments" placeholder="Additional comments (optional)"></textarea>
     </div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-4')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-4"></div>
+    </div>
   </div>
 </div>
 
@@ -189,6 +205,14 @@
     <h2>Property Condition — Exterior</h2>
     <div class="section-num">PM Checklist</div>
     <div id="pm-exterior"></div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-5')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-5"></div>
+    </div>
   </div>
 </div>
 
@@ -198,6 +222,14 @@
     <h2>Property Condition — Interior</h2>
     <div class="section-num">PM Checklist</div>
     <div id="pm-interior"></div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-6')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-6"></div>
+    </div>
   </div>
 </div>
 
@@ -207,6 +239,14 @@
     <h2>Property Condition — Services &amp; Electrical</h2>
     <div class="section-num">PM Checklist</div>
     <div id="pm-services"></div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-7')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-7"></div>
+    </div>
   </div>
 </div>
 
@@ -215,7 +255,6 @@
   <div class="card">
     <h2>Further Works</h2>
     <div class="section-num">Defects &amp; follow-up</div>
-
     <div class="field">
       <label>Further Works Required? <span class="req">*</span></label>
       <div class="seg">
@@ -225,12 +264,19 @@
         <label for="fw-y">Yes</label>
       </div>
     </div>
-
     <div class="conditional" id="cond-fw">
       <div class="field">
         <label>Describe the works required <span class="req">*</span></label>
         <textarea id="further_work_notes" placeholder="Describe what needs to be done…"></textarea>
       </div>
+    </div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-8')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-8"></div>
     </div>
   </div>
 </div>
@@ -240,7 +286,6 @@
   <div class="card">
     <h2>Evacuation Plan &amp; Asbestos</h2>
     <div class="section-num">Compliance</div>
-
     <div class="field">
       <label>Evacuation Plan Correctly Installed? <span class="req">*</span></label>
       <div class="seg green">
@@ -256,9 +301,7 @@
       <label>Date on Evacuation Plan</label>
       <input type="date" id="evac_plan_date">
     </div>
-
     <div class="divider"></div>
-
     <div class="field">
       <label>Asbestos Register Onsite? <span class="req">*</span></label>
       <div class="seg green">
@@ -281,6 +324,14 @@
         <label for="stk-na">N/A</label>
       </div>
     </div>
+    <div class="divider"></div>
+    <div class="inline-photos-wrap">
+      <label class="inline-photo-btn">
+        📷 Add photo
+        <input type="file" accept="image/*" multiple onchange="addStepPhotos(event,'step-9')" style="display:none">
+      </label>
+      <div class="inline-photo-grid" id="photos-step-9"></div>
+    </div>
   </div>
 </div>
 
@@ -289,9 +340,8 @@
   <div class="card">
     <h2>Photos</h2>
     <div class="section-num" id="photo-label-sub">Site photos</div>
-
     <div class="photo-zone" id="photo-zone">
-      <input type="file" id="photo-input" accept="image/*" multiple capture="environment">
+      <input type="file" id="photo-input" accept="image/*" multiple>
       <div class="icon">📷</div>
       <p>Tap to take or select photos</p>
     </div>
