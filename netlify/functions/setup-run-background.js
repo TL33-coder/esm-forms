@@ -11,7 +11,12 @@ async function asana(path, method = 'GET', body = null) {
   };
   if (body) opts.body = JSON.stringify({ data: body });
   const res = await fetch(`https://app.asana.com/api/1.0${path}`, opts);
-  return res.json();
+  const json = await res.json();
+  if (!res.ok) {
+    const message = json?.errors?.map(err => err.message).join('; ') || `Asana ${method} ${path} failed`;
+    throw new Error(message);
+  }
+  return json;
 }
 
 async function getWorkOrderPdf(taskGid) {
@@ -142,7 +147,7 @@ exports.handler = async (event) => {
     const runMembership = (task.memberships || []).find(m => m.project?.gid === projectGid);
     const sectionGid = runMembership?.section?.gid || null;
     const placement = sectionGid
-      ? { memberships: [{ project: projectGid, section: sectionGid }] }
+      ? { projects: [projectGid], memberships: [{ project: projectGid, section: sectionGid }] }
       : { projects: [projectGid] };
 
     const pdf = await getWorkOrderPdf(evt.resource.gid);
