@@ -99,10 +99,18 @@ exports.handler = async (event) => {
     }
   }
 
-  // ── Dropbox upload (swap in later) ───────────────────────────────
-  const DROPBOX_TOKEN = process.env.DROPBOX_TOKEN;
-  if (DROPBOX_TOKEN) {
+  // ── Dropbox upload ───────────────────────────────────────────────
+  const DROPBOX_REFRESH = process.env.DROPBOX_REFRESH_TOKEN;
+  const DROPBOX_KEY     = process.env.DROPBOX_APP_KEY;
+  const DROPBOX_SECRET  = process.env.DROPBOX_APP_SECRET;
+  if (DROPBOX_REFRESH && DROPBOX_KEY && DROPBOX_SECRET) {
     try {
+      const tokenRes = await fetch('https://api.dropbox.com/oauth2/token', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    `grant_type=refresh_token&refresh_token=${DROPBOX_REFRESH}&client_id=${DROPBOX_KEY}&client_secret=${DROPBOX_SECRET}`,
+      });
+      const { access_token } = await tokenRes.json();
       const cc       = (data.cc || 'XX').replace(/\//g, '-');
       const site     = (data.site_name || 'Unknown').replace(/[/\\:*?"<>|]/g, '-');
       const wo       = data.wo_number || 'WO';
@@ -115,7 +123,7 @@ exports.handler = async (event) => {
       await fetch('https://content.dropboxapi.com/2/files/upload', {
         method:  'POST',
         headers: {
-          Authorization:     `Bearer ${DROPBOX_TOKEN}`,
+          Authorization:     `Bearer ${access_token}`,
           'Content-Type':    'application/octet-stream',
           'Dropbox-API-Arg': JSON.stringify({ path, mode: 'overwrite', autorename: false }),
         },
