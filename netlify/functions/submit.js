@@ -1,5 +1,7 @@
 const crypto = require('crypto');
 
+const OUTPUT_BLOCK_START = '--- OUTPUT DATA START ---';
+const OUTPUT_BLOCK_END = '--- OUTPUT DATA END ---';
 const PHOTO_CATEGORY_RULES = [
   [/^s2_/i, 'Paths of Travel'],
   [/^s3_/i, 'Discharge from Exits'],
@@ -61,14 +63,49 @@ function buildRunContext(data) {
     siteFolder,
     pdfPath: `${siteFolder}/${cc}_${wo}_ESM_Report.pdf`,
     photoFolderPath: `${siteFolder}/Photos/${wo}`,
-    manifestKey: `${scope}/${dateStr}/${wo}.json`,
     summaryPath: `${outputsFolder}/${wo}_ESM_Run_Summary.xlsx`,
     photoIndexPath: `${outputsFolder}/${wo}_SVDP_Photo_Index.xlsx`,
   };
 }
 
-function buildManifestKey(data) {
-  return [data.cc || '', data.wo_number || '', data.site_name || ''].join('::');
+function stripOutputBlock(notes = '') {
+  const blockRe = new RegExp(`${OUTPUT_BLOCK_START}[\\s\\S]*?${OUTPUT_BLOCK_END}`, 'm');
+  return notes.replace(blockRe, '').trim();
+}
+
+function parseOutputBlock(notes = '') {
+  const match = notes.match(new RegExp(`${OUTPUT_BLOCK_START}\\n([\\s\\S]*?)\\n${OUTPUT_BLOCK_END}`));
+  if (!match) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+function upsertOutputBlock(notes = '', payload) {
+  const base = stripOutputBlock(notes);
+  const block = `${OUTPUT_BLOCK_START}\n${JSON.stringify(payload)}\n${OUTPUT_BLOCK_END}`;
+  return base ? `${base}\n\n${block}` : block;
+}
+
+// —— Asana helpers ————————————————————————————————————————————————
+async function asana(path, method = 'GET', body = null) {
+  const opts = {
+    method,
+    headers: {
+      Authorization: `Bearer ${process.env.ASANA_PAT}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  if (body) opts.body = JSON.stringify({ data: body });
+  const res = await fetch(`https://app.asana.com/api/1.0${path}`, opts);
+  const json = await res.json();
+  if (!res.ok) {
+    const message = json?.errors?.map(err => err.message).join('; ') || `Asana ${method} ${path} failed`;
+    throw new Error(message);
+  }
+  return json;
 }
 
 // —— Google Drive auth ————————————————————————————————————————————————
@@ -116,6 +153,7 @@ async function uploadToDrive(pdfBuffer, filename, folderId, token) {
   return res.ok;
 }
 
+// —— Dropbox helpers ————————————————————————————————————————————————
 async function getDropboxAccessToken(refreshToken, clientId, clientSecret) {
   const tokenRes = await fetch('https://api.dropbox.com/oauth2/token', {
     method: 'POST',
@@ -128,11 +166,6 @@ async function getDropboxAccessToken(refreshToken, clientId, clientSecret) {
     throw new Error(msg);
   }
   return tokenJson.access_token;
-}
-
-async function getManifestStore() {
-  const { getStore } = await import('@netlify/blobs');
-  return getStore('run-manifests');
 }
 
 async function uploadBufferToDropbox(accessToken, path, buffer, mode = 'overwrite') {
@@ -206,15 +239,6 @@ async function uploadPhotosToDropbox(accessToken, photoFiles, context) {
   };
 }
 
-function upsertManifestEntry(manifest, entry) {
-  const entries = Array.isArray(manifest.entries) ? manifest.entries : [];
-  const idx = entries.findIndex(item => item.record_key === entry.record_key);
-  if (idx >= 0) entries[idx] = entry;
-  else entries.push(entry);
-  manifest.entries = entries;
-  return manifest;
-}
-
 async function buildRunOutputs(renderUrl, renderKey, manifest) {
   const res = await fetch(`${renderUrl}/build-outputs`, {
     method: 'POST',
@@ -232,6 +256,23 @@ async function buildRunOutputs(renderUrl, renderKey, manifest) {
   return {
     summaryBuffer: Buffer.from(json.summary_xlsx, 'base64'),
     photoIndexBuffer: Buffer.from(json.photo_index_xlsx, 'base64'),
+  };
+}
+
+function buildManifest(entries, data, context) {
+  const deduped = new Map();
+  for (const entry of entries) {
+    deduped.set(entry.record_key, entry);
+  }
+
+  return {
+    scope: data.scope,
+    run_month: context.dateStr,
+    wo_number: data.wo_number,
+    run_label: context.runLabel,
+    entries: [...deduped.values()].sort((a, b) => {
+      return `${a.visit_date}|${a.cc}|${a.site_name}`.localeCompare(`${b.visit_date}|${b.cc}|${b.site_name}`);
+    }),
   };
 }
 
@@ -253,19 +294,22 @@ exports.handler = async (event) => {
   if (missing.length) {
     return { statusCode: 400, body: JSON.stringify({ error: `Missing fields: ${missing.join(', ')}` }) };
   }
+  if (!data.task_gid) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Missing task_gid. Re-run setup so the task link includes the new task parameter.' }) };
+  }
 
   data.submitted_at = formatSubmissionTimestamp();
-
   const context = buildRunContext(data);
+
   const RENDER_URL = process.env.RENDER_API_URL || 'https://esm-render-api-production.up.railway.app';
   const RENDER_KEY = process.env.RENDER_API_KEY || 'a40-esm-2026';
 
   let pdfBuffer;
   try {
     const res = await fetch(`${RENDER_URL}/render`, {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': RENDER_KEY },
-      body:    JSON.stringify(data),
+      body: JSON.stringify(data),
     });
     if (!res.ok) {
       const msg = await res.text();
@@ -276,46 +320,37 @@ exports.handler = async (event) => {
     return { statusCode: 502, body: JSON.stringify({ error: `Render API unreachable: ${err.message}` }) };
   }
 
-  // —— Google Drive upload ——————————————————————————————————————————
-  const SA_JSON    = process.env.GOOGLE_SERVICE_ACCOUNT;
-  const FOLDER_ID  = process.env.GOOGLE_DRIVE_FOLDER_ID || '1ru1YBC72LWJHytIGG5jbjMy94SuqAOTu';
-  if (SA_JSON) {
-    try {
-      const sa       = JSON.parse(SA_JSON);
-      const token    = await getGoogleToken(sa);
-      const filename = `${context.cc}_${context.wo}_ESM_Report.pdf`;
-      await uploadToDrive(pdfBuffer, filename, FOLDER_ID, token);
-    } catch (err) {
-      console.error('Google Drive upload failed:', err.message);
-    }
-  }
-
-  // —— Dropbox upload + run outputs ——————————————————————————————
   const DROPBOX_REFRESH = process.env.DROPBOX_REFRESH_TOKEN;
-  const DROPBOX_KEY     = process.env.DROPBOX_APP_KEY;
-  const DROPBOX_SECRET  = process.env.DROPBOX_APP_SECRET;
-
+  const DROPBOX_KEY = process.env.DROPBOX_APP_KEY;
+  const DROPBOX_SECRET = process.env.DROPBOX_APP_SECRET;
   if (!DROPBOX_REFRESH || !DROPBOX_KEY || !DROPBOX_SECRET) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Dropbox is not configured' }) };
   }
 
   try {
-    const accessToken = await getDropboxAccessToken(DROPBOX_REFRESH, DROPBOX_KEY, DROPBOX_SECRET);
+    // Optional Google Drive legacy upload
+    const SA_JSON = process.env.GOOGLE_SERVICE_ACCOUNT;
+    const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1ru1YBC72LWJHytIGG5jbjMy94SuqAOTu';
+    if (SA_JSON) {
+      try {
+        const sa = JSON.parse(SA_JSON);
+        const token = await getGoogleToken(sa);
+        await uploadToDrive(pdfBuffer, `${context.cc}_${context.wo}_ESM_Report.pdf`, FOLDER_ID, token);
+      } catch (err) {
+        console.error('Google Drive upload failed:', err.message);
+      }
+    }
 
+    const accessToken = await getDropboxAccessToken(DROPBOX_REFRESH, DROPBOX_KEY, DROPBOX_SECRET);
     await uploadBufferToDropbox(accessToken, context.pdfPath, pdfBuffer);
     const photoResult = await uploadPhotosToDropbox(accessToken, data.photo_files || {}, context);
 
-    const manifestStore = await getManifestStore();
-    const manifest = await manifestStore.get(context.manifestKey, { type: 'json', consistency: 'strong' }) || {
-      scope: data.scope,
-      run_month: context.dateStr,
-      wo_number: data.wo_number,
-      run_label: context.runLabel,
-      entries: [],
-    };
+    const { data: task } = await asana(`/tasks/${data.task_gid}?opt_fields=gid,name,notes,memberships.project.gid`);
+    const projectGid = task.memberships?.[0]?.project?.gid;
+    if (!projectGid) throw new Error('Submitting task is not linked to an Asana project');
 
-    upsertManifestEntry(manifest, {
-      record_key: buildManifestKey(data),
+    const entry = {
+      record_key: [data.cc || '', data.wo_number || '', data.site_name || ''].join('::'),
       cc: data.cc,
       site_name: data.site_name,
       address: data.address || '',
@@ -333,14 +368,18 @@ exports.handler = async (event) => {
       photo_folder_path: photoResult.photoFolderPath,
       photo_count: photoResult.photoCount,
       photo_counts: photoResult.photoCounts,
+    };
+
+    await asana(`/tasks/${data.task_gid}`, 'PUT', {
+      notes: upsertOutputBlock(task.notes || '', entry),
     });
 
-    manifest.entries = manifest.entries.sort((a, b) => {
-      return `${a.visit_date}|${a.cc}|${a.site_name}`.localeCompare(`${b.visit_date}|${b.cc}|${b.site_name}`);
-    });
+    const { data: projectTasks } = await asana(`/projects/${projectGid}/tasks?limit=100&opt_fields=gid,name,notes`);
+    const entries = (projectTasks || [])
+      .map(t => parseOutputBlock(t.notes || ''))
+      .filter(item => item && item.wo_number === data.wo_number);
 
-    await manifestStore.setJSON(context.manifestKey, manifest);
-
+    const manifest = buildManifest(entries, data, context);
     const outputs = await buildRunOutputs(RENDER_URL, RENDER_KEY, manifest);
     await uploadBufferToDropbox(accessToken, context.summaryPath, outputs.summaryBuffer);
     await uploadBufferToDropbox(accessToken, context.photoIndexPath, outputs.photoIndexBuffer);

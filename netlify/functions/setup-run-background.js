@@ -223,12 +223,17 @@ exports.handler = async (event) => {
     }
 
     for (const a of assets) {
-      const url = `${FORM_BASE}?cc=${encodeURIComponent(a.cc)}&site=${encodeURIComponent(a.name)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}&addr=${encodeURIComponent(a.address || '')}&phone=${encodeURIComponent(a.phone || '')}`;
-      const notes = `${url}\n\nAddress: ${a.address || '(not in WO)'}\nPhone: ${a.phone || '(not in WO)'}\nCC: ${a.cc}`;
-      await asana('/tasks', 'POST', {
+      const baseNotes = `Address: ${a.address || '(not in WO)'}\nPhone: ${a.phone || '(not in WO)'}\nCC: ${a.cc}`;
+      const created = await asana('/tasks', 'POST', {
         name: `${a.cc} — ${a.name}`,
-        notes,
+        notes: baseNotes,
         ...placement,
+      });
+      const taskGid = created?.data?.gid;
+      if (!taskGid) continue;
+      const url = `${FORM_BASE}?cc=${encodeURIComponent(a.cc)}&site=${encodeURIComponent(a.name)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}&addr=${encodeURIComponent(a.address || '')}&phone=${encodeURIComponent(a.phone || '')}&task=${encodeURIComponent(taskGid)}`;
+      await asana(`/tasks/${taskGid}`, 'PUT', {
+        notes: `${url}\n\n${baseNotes}`,
       });
     }
   }
