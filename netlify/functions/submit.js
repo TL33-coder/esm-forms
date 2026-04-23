@@ -17,7 +17,7 @@ exports.handler = async (event) => {
   }
 
   const RENDER_URL = process.env.RENDER_API_URL || 'https://esm-render-api-production.up.railway.app';
-  const RENDER_KEY = process.env.RENDER_API_KEY || '';
+  const RENDER_KEY = process.env.RENDER_API_KEY || 'a40-esm-2026';
 
   let pdfBuffer;
   try {
