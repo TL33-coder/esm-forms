@@ -131,7 +131,7 @@ exports.handler = async (event) => {
     if (evt.resource?.resource_type !== 'task' || evt.action !== 'changed') continue;
 
     const { data: task } = await asana(
-      `/tasks/${evt.resource.gid}?opt_fields=name,completed,memberships.project.gid`
+      `/tasks/${evt.resource.gid}?opt_fields=name,completed,memberships.project.gid,memberships.section.gid`
     );
     if (!task?.completed) continue;
 
@@ -144,12 +144,18 @@ exports.handler = async (event) => {
     const projectGid = task.memberships?.[0]?.project?.gid;
     if (!projectGid) continue;
 
+    const runMembership = (task.memberships || []).find(m => m.project?.gid === projectGid);
+    const sectionGid = runMembership?.section?.gid || null;
+    const placement = sectionGid
+      ? { memberships: [{ project: projectGid, section: sectionGid }] }
+      : { projects: [projectGid] };
+
     const pdf = await getWorkOrderPdf(evt.resource.gid);
     if (!pdf) {
       await asana('/tasks', 'POST', {
         name: `⚠ SETUP FAILED — no PDF attached to ${task.name}`,
         notes: `Attach the Work Order PDF to the START RUN task, then re-complete it.`,
-        projects: [projectGid],
+        ...placement,
       });
       continue;
     }
@@ -162,7 +168,7 @@ exports.handler = async (event) => {
       await asana('/tasks', 'POST', {
         name: `⚠ SETUP FAILED — PDF parse error`,
         notes: `${err.message}\n\nFile: ${pdf.name}`,
-        projects: [projectGid],
+        ...placement,
       });
       continue;
     }
@@ -171,7 +177,7 @@ exports.handler = async (event) => {
       await asana('/tasks', 'POST', {
         name: `⚠ SETUP FAILED — no assets parsed from ${pdf.name}`,
         notes: `Raw rows (first 80):\n\n${rows.slice(0, 80).join('\n')}`,
-        projects: [projectGid],
+        ...placement,
       });
       continue;
     }
@@ -200,7 +206,7 @@ exports.handler = async (event) => {
           `These sites appear on ${woNumber} but are not in the ${monthCode} master list:\n\n` +
           newSites.map(a => `• ${a.cc} — ${a.name}  (${a.address || 'no address'})`).join('\n') +
           `\n\nIf these are legitimate, add them to known-sites.json under rotations.${monthCode} and sites.`,
-        projects: [projectGid],
+        ...placement,
       });
     }
 
@@ -211,7 +217,7 @@ exports.handler = async (event) => {
           `These sites were on the last ${monthCode} run but are NOT on ${woNumber}:\n\n` +
           missingCCs.map(cc => `• ${cc} — ${known.sites?.[cc] || 'unknown'}`).join('\n') +
           `\n\nIf these are legitimately removed, delete them from known-sites.json.`,
-        projects: [projectGid],
+        ...placement,
       });
     }
 
@@ -221,7 +227,7 @@ exports.handler = async (event) => {
       await asana('/tasks', 'POST', {
         name: `${a.cc} — ${a.name}`,
         notes,
-        projects: [projectGid],
+        ...placement,
       });
     }
   }
