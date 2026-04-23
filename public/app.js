@@ -12,16 +12,16 @@ const INSPECTORS = ['John'];
 // ── PM field definitions ──────────────────────────────────────────
 const STD   = ['Good','Fair','Poor','N/A'];
 const OPER  = ['Operating Correctly','Not Operating Correctly','N/A'];
-const CLEAN = ['Already Clean on Inspection','Requires Attention','N/A'];
-const FUNC  = ['Already Fully Functional on Inspection','Requires Attention','N/A'];
+const CLEAN = ['Operating Correctly','Requires Attention','N/A'];
+const FUNC  = ['Operating Correctly on Inspection','Requires Attention','N/A'];
 const POS   = ['Already in Correct Position','Requires Attention','N/A'];
 
 // Default (pre-selected) value per option set
 const DEFAULT = {
   [STD.join()]:   'Good',
   [OPER.join()]:  'Operating Correctly',
-  [CLEAN.join()]: 'Already Clean on Inspection',
-  [FUNC.join()]:  'Already Fully Functional on Inspection',
+  [CLEAN.join()]: 'Operating Correctly',
+  [FUNC.join()]:  'Operating Correctly on Inspection',
   [POS.join()]:   'Already in Correct Position',
 };
 
@@ -354,6 +354,12 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     document.getElementById('photo-label-sub').textContent = 'Door & further works photos';
   }
+
+  // Auto-fill date and time
+  const now = new Date();
+  document.getElementById('visit_date').value = now.toISOString().slice(0, 10);
+  document.getElementById('time_in').value =
+    String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 
   // Populate inspector dropdown
   const sel = document.getElementById('completed_by');
