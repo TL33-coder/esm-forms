@@ -53,15 +53,8 @@ exports.handler = async (event) => {
       const site = (t.name.match(/—\s*(.+)$/)?.[1]?.trim() || t.name);
       const url  = `${FORM_BASE}?cc=${encodeURIComponent(cc)}&site=${encodeURIComponent(site)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}`;
 
-      const form = new FormData();
-      form.append('parent',        t.gid);
-      form.append('resource_type', 'external');
-      form.append('name',          'ESM Inspection Form');
-      form.append('url',           url);
-      await fetch('https://app.asana.com/api/1.0/attachments', {
-        method:  'POST',
-        headers: { Authorization: `Bearer ${process.env.ASANA_PAT}` },
-        body:    form,
+      await asana(`/tasks/${t.gid}`, 'PUT', {
+        notes: `${url}\n\n${t.notes || ''}`.trim(),
       });
     }
   }
