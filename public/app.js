@@ -4,6 +4,8 @@ const CC    = params.get('cc')    || '';
 const SITE  = params.get('site')  || 'Unknown Store';
 const SCOPE = (params.get('scope') || 'ESM').toUpperCase();
 const WO    = params.get('wo')    || '';
+const ADDRESS = params.get('addr') || '';
+const PHONE   = params.get('phone') || '';
 const IS_PM = SCOPE === 'ESMPM' || SCOPE === 'ANNUAL';
 
 // ── Inspectors ────────────────────────────────────────────────────
@@ -289,6 +291,8 @@ function buildPayload() {
     scope:                  SCOPE,
     cc:                     CC,
     site_name:              SITE,
+    address:                ADDRESS,
+    phone:                  PHONE,
     wo_number:              WO,
     visit_date:             fmtDate,
     completed_by:           val('completed_by'),

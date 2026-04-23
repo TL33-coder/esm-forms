@@ -223,7 +223,7 @@ exports.handler = async (event) => {
     }
 
     for (const a of assets) {
-      const url = `${FORM_BASE}?cc=${encodeURIComponent(a.cc)}&site=${encodeURIComponent(a.name)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}`;
+      const url = `${FORM_BASE}?cc=${encodeURIComponent(a.cc)}&site=${encodeURIComponent(a.name)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}&addr=${encodeURIComponent(a.address || '')}&phone=${encodeURIComponent(a.phone || '')}`;
       const notes = `${url}\n\nAddress: ${a.address || '(not in WO)'}\nPhone: ${a.phone || '(not in WO)'}\nCC: ${a.cc}`;
       await asana('/tasks', 'POST', {
         name: `${a.cc} — ${a.name}`,
