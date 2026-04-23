@@ -1,5 +1,17 @@
 const crypto = require('crypto');
 
+function formatSubmissionTimestamp(date = new Date()) {
+  return new Intl.DateTimeFormat('en-AU', {
+    timeZone: 'Australia/Sydney',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date).replace(',', '');
+}
+
 // ── Google Drive auth ─────────────────────────────────────────────
 function createJWT(sa) {
   const header  = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
@@ -45,6 +57,56 @@ async function uploadToDrive(pdfBuffer, filename, folderId, token) {
   return res.ok;
 }
 
+async function getDropboxAccessToken(refreshToken, clientId, clientSecret) {
+  const tokenRes = await fetch('https://api.dropbox.com/oauth2/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${clientId}&client_secret=${clientSecret}`,
+  });
+  const tokenJson = await tokenRes.json();
+  if (!tokenRes.ok || !tokenJson.access_token) {
+    const msg = tokenJson.error_description || tokenJson.error || 'Unable to refresh Dropbox token';
+    throw new Error(msg);
+  }
+  return tokenJson.access_token;
+}
+
+async function uploadToDropbox(pdfBuffer, data, accessToken) {
+  const cc       = (data.cc || 'XX').replace(/\//g, '-');
+  const site     = (data.site_name || 'Unknown').replace(/[/\\:*?"<>|]/g, '-');
+  const wo       = data.wo_number || 'WO';
+  const scope    = data.scope || 'ESM';
+  const dateStr  = data.visit_date
+    ? data.visit_date.split('/').reverse().join('-').slice(0, 7)
+    : new Date().toISOString().slice(0, 7);
+  const filename = `${cc}_${wo}_ESM_Report.pdf`;
+  const path     = `/SVDP ESM/Runs/${scope}/${dateStr}/${cc} - ${site}/${filename}`;
+
+  const uploadRes = await fetch('https://content.dropboxapi.com/2/files/upload', {
+    method:  'POST',
+    headers: {
+      Authorization:     `Bearer ${accessToken}`,
+      'Content-Type':    'application/octet-stream',
+      'Dropbox-API-Arg': JSON.stringify({ path, mode: 'overwrite', autorename: false }),
+    },
+    body: pdfBuffer,
+  });
+
+  let uploadJson = null;
+  try {
+    uploadJson = await uploadRes.json();
+  } catch {
+    uploadJson = null;
+  }
+
+  if (!uploadRes.ok) {
+    const msg = uploadJson?.error_summary || uploadJson?.error?.['.tag'] || `Dropbox upload failed (${uploadRes.status})`;
+    throw new Error(msg);
+  }
+
+  return { path, metadata: uploadJson };
+}
+
 // ── Main handler ──────────────────────────────────────────────────
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -63,6 +125,8 @@ exports.handler = async (event) => {
   if (missing.length) {
     return { statusCode: 400, body: JSON.stringify({ error: `Missing fields: ${missing.join(', ')}` }) };
   }
+
+  data.submitted_at = formatSubmissionTimestamp();
 
   const RENDER_URL = process.env.RENDER_API_URL || 'https://esm-render-api-production.up.railway.app';
   const RENDER_KEY = process.env.RENDER_API_KEY || 'a40-esm-2026';
@@ -103,36 +167,23 @@ exports.handler = async (event) => {
   const DROPBOX_REFRESH = process.env.DROPBOX_REFRESH_TOKEN;
   const DROPBOX_KEY     = process.env.DROPBOX_APP_KEY;
   const DROPBOX_SECRET  = process.env.DROPBOX_APP_SECRET;
+  let dropboxResult = null;
   if (DROPBOX_REFRESH && DROPBOX_KEY && DROPBOX_SECRET) {
     try {
-      const tokenRes = await fetch('https://api.dropbox.com/oauth2/token', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    `grant_type=refresh_token&refresh_token=${DROPBOX_REFRESH}&client_id=${DROPBOX_KEY}&client_secret=${DROPBOX_SECRET}`,
-      });
-      const { access_token } = await tokenRes.json();
-      const cc       = (data.cc || 'XX').replace(/\//g, '-');
-      const site     = (data.site_name || 'Unknown').replace(/[/\\:*?"<>|]/g, '-');
-      const wo       = data.wo_number || 'WO';
-      const scope    = data.scope || 'ESM';
-      const dateStr  = data.visit_date
-        ? data.visit_date.split('/').reverse().join('-').slice(0, 7)
-        : new Date().toISOString().slice(0, 7);
-      const filename = `${cc}_${wo}_ESM_Report.pdf`;
-      const path     = `/SVDP ESM/Runs/${scope}/${dateStr}/${cc} - ${site}/${filename}`;
-      await fetch('https://content.dropboxapi.com/2/files/upload', {
-        method:  'POST',
-        headers: {
-          Authorization:     `Bearer ${access_token}`,
-          'Content-Type':    'application/octet-stream',
-          'Dropbox-API-Arg': JSON.stringify({ path, mode: 'overwrite', autorename: false }),
-        },
-        body: pdfBuffer,
-      });
+      const accessToken = await getDropboxAccessToken(DROPBOX_REFRESH, DROPBOX_KEY, DROPBOX_SECRET);
+      dropboxResult = await uploadToDropbox(pdfBuffer, data, accessToken);
     } catch (err) {
       console.error('Dropbox upload failed:', err.message);
+      return { statusCode: 502, body: JSON.stringify({ error: `Dropbox upload failed: ${err.message}` }) };
     }
   }
 
-  return { statusCode: 200, body: JSON.stringify({ success: true }) };
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      success: true,
+      submitted_at: data.submitted_at,
+      dropbox_path: dropboxResult?.path || null,
+    }),
+  };
 };
