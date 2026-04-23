@@ -61,7 +61,7 @@ function buildRunContext(data) {
     siteFolder,
     pdfPath: `${siteFolder}/${cc}_${wo}_ESM_Report.pdf`,
     photoFolderPath: `${siteFolder}/Photos/${wo}`,
-    manifestPath: `${outputsFolder}/${wo}_run_manifest.json`,
+    manifestKey: `${scope}/${dateStr}/${wo}.json`,
     summaryPath: `${outputsFolder}/${wo}_ESM_Run_Summary.xlsx`,
     photoIndexPath: `${outputsFolder}/${wo}_SVDP_Photo_Index.xlsx`,
   };
@@ -130,6 +130,11 @@ async function getDropboxAccessToken(refreshToken, clientId, clientSecret) {
   return tokenJson.access_token;
 }
 
+async function getManifestStore() {
+  const { getStore } = await import('@netlify/blobs');
+  return getStore('run-manifests');
+}
+
 async function uploadBufferToDropbox(accessToken, path, buffer, mode = 'overwrite') {
   const res = await fetch('https://content.dropboxapi.com/2/files/upload', {
     method: 'POST',
@@ -154,28 +159,6 @@ async function uploadBufferToDropbox(accessToken, path, buffer, mode = 'overwrit
   }
 
   return json;
-}
-
-async function uploadJsonToDropbox(accessToken, path, value) {
-  const body = Buffer.from(JSON.stringify(value, null, 2), 'utf8');
-  return uploadBufferToDropbox(accessToken, path, body);
-}
-
-async function downloadJsonFromDropbox(accessToken, path) {
-  const res = await fetch('https://content.dropboxapi.com/2/files/download', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Dropbox-API-Arg': JSON.stringify({ path }),
-    },
-  });
-
-  if (res.status === 409) return null;
-  if (!res.ok) {
-    const msg = await res.text();
-    throw new Error(`Dropbox download failed (${res.status}): ${msg}`);
-  }
-  return res.json();
 }
 
 async function deleteDropboxPath(accessToken, path) {
@@ -322,7 +305,8 @@ exports.handler = async (event) => {
     await uploadBufferToDropbox(accessToken, context.pdfPath, pdfBuffer);
     const photoResult = await uploadPhotosToDropbox(accessToken, data.photo_files || {}, context);
 
-    const manifest = await downloadJsonFromDropbox(accessToken, context.manifestPath) || {
+    const manifestStore = await getManifestStore();
+    const manifest = await manifestStore.get(context.manifestKey, { type: 'json', consistency: 'strong' }) || {
       scope: data.scope,
       run_month: context.dateStr,
       wo_number: data.wo_number,
@@ -355,7 +339,7 @@ exports.handler = async (event) => {
       return `${a.visit_date}|${a.cc}|${a.site_name}`.localeCompare(`${b.visit_date}|${b.cc}|${b.site_name}`);
     });
 
-    await uploadJsonToDropbox(accessToken, context.manifestPath, manifest);
+    await manifestStore.setJSON(context.manifestKey, manifest);
 
     const outputs = await buildRunOutputs(RENDER_URL, RENDER_KEY, manifest);
     await uploadBufferToDropbox(accessToken, context.summaryPath, outputs.summaryBuffer);
