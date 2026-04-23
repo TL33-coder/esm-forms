@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Submitted</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="success-wrap">
+  <div class="success-icon">✅</div>
+  <h2>Report Submitted</h2>
+  <p id="msg">The inspection report has been generated and saved.</p>
+</div>
+<script>
+  const site = new URLSearchParams(location.search).get('site');
+  if (site) document.getElementById('msg').textContent =
+    `The report for ${site} has been generated and saved.`;
+</script>
+</body>
+</html>

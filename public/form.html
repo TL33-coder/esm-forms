@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>ESM Inspection Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>ESM Inspection</h1>
+  <div class="store-name" id="hdr-store">Loading...</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label"></div>
+</div>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>Generating report…</p>
+</div>
+<div class="error-msg" id="error-msg"></div>
+
+<!-- ── STEP 1: Site Details ──────────────────────────────────────── -->
+<div class="step" id="step-1">
+  <div class="card">
+    <h2>Site Details</h2>
+    <div class="section-num">Start here</div>
+
+    <div class="field">
+      <label>Inspection Date <span class="req">*</span></label>
+      <input type="date" id="visit_date" required>
+    </div>
+    <div class="field">
+      <label>Time In <span class="req">*</span></label>
+      <input type="time" id="time_in" required>
+    </div>
+    <div class="field">
+      <label>Time Out</label>
+      <input type="time" id="time_out">
+    </div>
+    <div class="field">
+      <label>Inspected By <span class="req">*</span></label>
+      <input type="text" id="completed_by" placeholder="Full name" required>
+    </div>
+    <div class="field">
+      <label>Site Contact</label>
+      <input type="text" id="site_contact" placeholder="Name (optional)">
+    </div>
+    <div class="field">
+      <label>Site Contact Details</label>
+      <input type="text" id="site_contact_details" placeholder="Phone / email (optional)">
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 2: 1.6 Paths of Travel ──────────────────────────────── -->
+<div class="step" id="step-2" style="display:none">
+  <div class="card">
+    <h2>Paths of Travel to Exits</h2>
+    <div class="section-num">Section 1.6</div>
+
+    <div class="field">
+      <label>Compliant? <span class="req">*</span></label>
+      <div class="seg green" id="seg-pte">
+        <input type="radio" name="pte" id="pte-c" value="Compliant">
+        <label for="pte-c">Compliant</label>
+        <input type="radio" name="pte" id="pte-n" value="Non-Compliant">
+        <label for="pte-n">Non-Compliant</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond-pte">
+      <div class="field">
+        <label>Problems Identified</label>
+        <textarea id="pte_problems" placeholder="Describe the problem…"></textarea>
+      </div>
+      <div class="field">
+        <label>Action Taken</label>
+        <textarea id="pte_action" placeholder="What was done to rectify…"></textarea>
+      </div>
+      <div class="field">
+        <label>Date of Rectification</label>
+        <input type="date" id="pte_rect_date">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Comments</label>
+      <textarea id="pte_comments" placeholder="Additional comments (optional)"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 3: 2.2 Discharge from Exits ─────────────────────────── -->
+<div class="step" id="step-3" style="display:none">
+  <div class="card">
+    <h2>Discharge from Exits</h2>
+    <div class="section-num">Section 2.2</div>
+
+    <div class="field">
+      <label>Gate Sign Displayed? <span class="req">*</span></label>
+      <div class="seg green" id="seg-gate">
+        <input type="radio" name="gate_sign" id="gate-y" value="Yes">
+        <label for="gate-y">Yes</label>
+        <input type="radio" name="gate_sign" id="gate-n" value="No">
+        <label for="gate-n">No</label>
+        <input type="radio" name="gate_sign" id="gate-na" value="N/A">
+        <label for="gate-na">N/A</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Problems Identified</label>
+      <textarea id="dfe_problems" placeholder="Describe any problems…"></textarea>
+    </div>
+    <div class="conditional" id="cond-dfe">
+      <div class="field">
+        <label>Action Taken</label>
+        <textarea id="dfe_action" placeholder="What was done to rectify…"></textarea>
+      </div>
+      <div class="field">
+        <label>Date of Rectification</label>
+        <input type="date" id="dfe_rect_date">
+      </div>
+    </div>
+    <div class="field">
+      <label>Comments</label>
+      <textarea id="dfe_comments" placeholder="Additional comments (optional)"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 4: 2.6 Doors ─────────────────────────────────────────── -->
+<div class="step" id="step-4" style="display:none">
+  <div class="card">
+    <h2>Doors Other than Smoke/Fire</h2>
+    <div class="section-num">Section 2.6</div>
+
+    <div class="field">
+      <label>Compliant? <span class="req">*</span></label>
+      <div class="seg green">
+        <input type="radio" name="doors" id="doors-c" value="Compliant">
+        <label for="doors-c">Compliant</label>
+        <input type="radio" name="doors" id="doors-n" value="Non-Compliant">
+        <label for="doors-n">Non-Compliant</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Operating Correctly? <span class="req">*</span></label>
+      <div class="seg green">
+        <input type="radio" name="doors_op" id="dop-y" value="Operating Correctly">
+        <label for="dop-y">Yes</label>
+        <input type="radio" name="doors_op" id="dop-n" value="Not Operating Correctly">
+        <label for="dop-n">No</label>
+        <input type="radio" name="doors_op" id="dop-na" value="N/A">
+        <label for="dop-na">N/A</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond-doors">
+      <div class="field">
+        <label>Problems Identified</label>
+        <textarea id="doors_problems" placeholder="Describe the problem…"></textarea>
+      </div>
+      <div class="field">
+        <label>Action Taken</label>
+        <textarea id="doors_action" placeholder="What was done to rectify…"></textarea>
+      </div>
+      <div class="field">
+        <label>Date of Rectification</label>
+        <input type="date" id="doors_rect_date">
+      </div>
+    </div>
+    <div class="field">
+      <label>Comments</label>
+      <textarea id="doors_comments" placeholder="Additional comments (optional)"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 5: PM Exterior ──────────────────────────────────────── -->
+<div class="step pm-step" id="step-5" style="display:none">
+  <div class="card">
+    <h2>Property Condition — Exterior</h2>
+    <div class="section-num">PM Checklist</div>
+    <div id="pm-exterior"></div>
+  </div>
+</div>
+
+<!-- ── STEP 6: PM Interior ──────────────────────────────────────── -->
+<div class="step pm-step" id="step-6" style="display:none">
+  <div class="card">
+    <h2>Property Condition — Interior</h2>
+    <div class="section-num">PM Checklist</div>
+    <div id="pm-interior"></div>
+  </div>
+</div>
+
+<!-- ── STEP 7: PM Services + Electrical + Other ─────────────────── -->
+<div class="step pm-step" id="step-7" style="display:none">
+  <div class="card">
+    <h2>Property Condition — Services &amp; Electrical</h2>
+    <div class="section-num">PM Checklist</div>
+    <div id="pm-services"></div>
+  </div>
+</div>
+
+<!-- ── STEP 8: Further Works ────────────────────────────────────── -->
+<div class="step" id="step-8" style="display:none">
+  <div class="card">
+    <h2>Further Works</h2>
+    <div class="section-num">Defects &amp; follow-up</div>
+
+    <div class="field">
+      <label>Further Works Required? <span class="req">*</span></label>
+      <div class="seg">
+        <input type="radio" name="further_work_required" id="fw-n" value="No">
+        <label for="fw-n">No</label>
+        <input type="radio" name="further_work_required" id="fw-y" value="Yes">
+        <label for="fw-y">Yes</label>
+      </div>
+    </div>
+
+    <div class="conditional" id="cond-fw">
+      <div class="field">
+        <label>Describe the works required <span class="req">*</span></label>
+        <textarea id="further_work_notes" placeholder="Describe what needs to be done…"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 9: Evac + Asbestos ──────────────────────────────────── -->
+<div class="step pm-step" id="step-9" style="display:none">
+  <div class="card">
+    <h2>Evacuation Plan &amp; Asbestos</h2>
+    <div class="section-num">Compliance</div>
+
+    <div class="field">
+      <label>Evacuation Plan Correctly Installed? <span class="req">*</span></label>
+      <div class="seg green">
+        <input type="radio" name="evac_plan_installed" id="evac-y" value="Yes">
+        <label for="evac-y">Yes</label>
+        <input type="radio" name="evac_plan_installed" id="evac-n" value="No">
+        <label for="evac-n">No</label>
+        <input type="radio" name="evac_plan_installed" id="evac-na" value="N/A">
+        <label for="evac-na">N/A</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Date on Evacuation Plan</label>
+      <input type="date" id="evac_plan_date">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>Asbestos Register Onsite? <span class="req">*</span></label>
+      <div class="seg green">
+        <input type="radio" name="asbestos_register" id="asb-y" value="Yes">
+        <label for="asb-y">Yes</label>
+        <input type="radio" name="asbestos_register" id="asb-n" value="No">
+        <label for="asb-n">No</label>
+        <input type="radio" name="asbestos_register" id="asb-na" value="N/A">
+        <label for="asb-na">N/A</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>Awareness Stickers in Place? <span class="req">*</span></label>
+      <div class="seg green">
+        <input type="radio" name="asbestos_stickers" id="stk-y" value="Yes">
+        <label for="stk-y">Yes</label>
+        <input type="radio" name="asbestos_stickers" id="stk-n" value="No">
+        <label for="stk-n">No</label>
+        <input type="radio" name="asbestos_stickers" id="stk-na" value="N/A">
+        <label for="stk-na">N/A</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STEP 10: Photos ───────────────────────────────────────────── -->
+<div class="step" id="step-10" style="display:none">
+  <div class="card">
+    <h2>Photos</h2>
+    <div class="section-num" id="photo-label-sub">Site photos</div>
+
+    <div class="photo-zone" id="photo-zone">
+      <input type="file" id="photo-input" accept="image/*" multiple capture="environment">
+      <div class="icon">📷</div>
+      <p>Tap to take or select photos</p>
+    </div>
+    <div class="photo-grid" id="photo-grid"></div>
+  </div>
+</div>
+
+<!-- ── Navigation ───────────────────────────────────────────────── -->
+<div class="nav">
+  <button class="btn btn-back" id="btn-back" onclick="prevStep()">Back</button>
+  <button class="btn btn-next" id="btn-next" onclick="nextStep()">Next</button>
+  <button class="btn btn-submit" id="btn-submit" style="display:none" onclick="submitForm()">Submit Report</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
