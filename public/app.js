@@ -6,12 +6,24 @@ const SCOPE = (params.get('scope') || 'ESM').toUpperCase();
 const WO    = params.get('wo')    || '';
 const IS_PM = SCOPE === 'ESMPM' || SCOPE === 'ANNUAL';
 
+// ── Inspectors ────────────────────────────────────────────────────
+const INSPECTORS = ['John'];
+
 // ── PM field definitions ──────────────────────────────────────────
 const STD   = ['Good','Fair','Poor','N/A'];
 const OPER  = ['Operating Correctly','Not Operating Correctly','N/A'];
 const CLEAN = ['Already Clean on Inspection','Requires Attention','N/A'];
 const FUNC  = ['Already Fully Functional on Inspection','Requires Attention','N/A'];
 const POS   = ['Already in Correct Position','Requires Attention','N/A'];
+
+// Default (pre-selected) value per option set
+const DEFAULT = {
+  [STD.join()]:   'Good',
+  [OPER.join()]:  'Operating Correctly',
+  [CLEAN.join()]: 'Already Clean on Inspection',
+  [FUNC.join()]:  'Already Fully Functional on Inspection',
+  [POS.join()]:   'Already in Correct Position',
+};
 
 const PM_GROUPS = {
   Exterior: [
@@ -69,9 +81,10 @@ function radio(name) {
   return el ? el.value : '';
 }
 
-function buildSegKey(key, opts) {
+function buildSegKey(key, opts, defaultVal) {
+  const def = defaultVal !== undefined ? defaultVal : DEFAULT[opts.join()] || '';
   return opts.map((o, i) => `
-    <input type="radio" name="${key}" id="${key}-${i}" value="${o}">
+    <input type="radio" name="${key}" id="${key}-${i}" value="${o}"${o === def ? ' checked' : ''}>
     <label for="${key}-${i}">${o}</label>
   `).join('');
 }
@@ -322,6 +335,30 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     document.getElementById('photo-label-sub').textContent = 'Door & further works photos';
   }
+
+  // Populate inspector dropdown
+  const sel = document.getElementById('completed_by');
+  INSPECTORS.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = opt.textContent = name;
+    sel.appendChild(opt);
+  });
+
+  // Pre-select ESM radio defaults
+  const preselect = [
+    ['pte', 'Compliant'],
+    ['gate_sign', 'Yes'],
+    ['doors', 'Compliant'],
+    ['doors_op', 'Operating Correctly'],
+    ['further_work_required', 'No'],
+    ['evac_plan_installed', 'Yes'],
+    ['asbestos_register', 'Yes'],
+    ['asbestos_stickers', 'Yes'],
+  ];
+  preselect.forEach(([name, val]) => {
+    const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+    if (el) { el.checked = true; el.dispatchEvent(new Event('change')); }
+  });
 
   buildPmSection('pm-exterior',  ['Exterior']);
   buildPmSection('pm-interior',  ['Interior']);
