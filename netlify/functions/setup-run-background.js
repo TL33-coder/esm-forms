@@ -34,6 +34,7 @@ async function getWorkOrderPdf(taskGid) {
 
 async function extractPdfText(buffer) {
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
+  globalThis.pdfjsWorker ||= await import('pdfjs-dist/legacy/build/pdf.worker.mjs');
   const loadingTask = pdfjs.getDocument({ data: new Uint8Array(buffer), disableFontFace: true });
   const pdf = await loadingTask.promise;
   const rows = [];
