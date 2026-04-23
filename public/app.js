@@ -7,7 +7,7 @@ const WO    = params.get('wo')    || '';
 const IS_PM = SCOPE === 'ESMPM' || SCOPE === 'ANNUAL';
 
 // ── Inspectors ────────────────────────────────────────────────────
-const INSPECTORS = ['John Panopoulos', 'Anthony Nicklin', 'Tom Landy'];
+const INSPECTORS = ['John Panopoulos'];
 
 // ── PM field definitions ──────────────────────────────────────────
 const STD   = ['Good','Fair','Poor','N/A'];
