@@ -69,6 +69,14 @@ function cleanName(s) {
     .trim();
 }
 
+function sortAssetsAlpha(assets) {
+  return [...assets].sort((a, b) => {
+    const byName = a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+    if (byName !== 0) return byName;
+    return a.cc.localeCompare(b.cc, 'en', { sensitivity: 'base' });
+  });
+}
+
 function parseAssets(rows) {
   const clean = rows.map(r =>
     r.replace(/\bBuilding\s+Centre\b/gi, '')
@@ -115,11 +123,11 @@ function parseAssets(rows) {
   }
 
   const seen = new Set();
-  return assets.filter(a => {
+  return sortAssetsAlpha(assets.filter(a => {
     if (seen.has(a.cc)) return false;
     seen.add(a.cc);
     return true;
-  });
+  }));
 }
 
 exports.handler = async (event) => {
