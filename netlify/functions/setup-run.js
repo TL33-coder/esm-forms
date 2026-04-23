@@ -50,14 +50,18 @@ exports.handler = async (event) => {
       if (/^SETUP:/i.test(t.name) || /^START\s+RUN/i.test(t.name)) continue;
 
       const cc   = (t.notes?.match(/CC:\s*(\S+)/)?.[1] || 'XX');
-      const site = (t.name.match(/[—\-]\s*(.+)$/)?.[1]?.trim() || t.name);
+      const site = (t.name.match(/—\s*(.+)$/)?.[1]?.trim() || t.name);
       const url  = `${FORM_BASE}?cc=${encodeURIComponent(cc)}&site=${encodeURIComponent(site)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}`;
 
-      await asana('/attachments', 'POST', {
-        parent:        t.gid,
-        resource_type: 'external',
-        name:          'ESM Inspection Form',
-        url,
+      const form = new FormData();
+      form.append('parent',        t.gid);
+      form.append('resource_type', 'external');
+      form.append('name',          'ESM Inspection Form');
+      form.append('url',           url);
+      await fetch('https://app.asana.com/api/1.0/attachments', {
+        method:  'POST',
+        headers: { Authorization: `Bearer ${process.env.ASANA_PAT}` },
+        body:    form,
       });
     }
   }
