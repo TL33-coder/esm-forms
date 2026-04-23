@@ -1,0 +1,842 @@
+[
+  {
+    "cc": "C514",
+    "name": "Alfredton Store",
+    "address": "1824 Sturt Street",
+    "phone": "5334 2234",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C114",
+    "name": "Altona Store",
+    "address": "99 Doherty's Road",
+    "phone": "9267 2804",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C516",
+    "name": "Ararat Store",
+    "address": "264 Barkly Street",
+    "phone": "5352 5560",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C102",
+    "name": "Ascot Vale Store",
+    "address": "155 Maribyrnong Road",
+    "phone": "9370 3443",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C126",
+    "name": "Bacchus Marsh Store",
+    "address": "8  Grant Street",
+    "phone": "8199 4205",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C828",
+    "name": "Bairnsdale Store",
+    "address": "316 Main Street",
+    "phone": "5152 3944",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C363",
+    "name": "Bayswater Store",
+    "address": "Unit 1, 700 Mountain Highway",
+    "phone": "9729 6317",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C712",
+    "name": "Benalla Store",
+    "address": "41-45 Nunn Street",
+    "phone": "5762 6507",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C714",
+    "name": "Bendigo Store",
+    "address": "31 Chapel Street",
+    "phone": "5443 5052",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C374",
+    "name": "Bentleigh Store",
+    "address": "394 Centre Road",
+    "phone": "9557 1002",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C891",
+    "name": "Briar Hill Store",
+    "address": "23 Sherbourne Road",
+    "phone": "9432 6797",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C890",
+    "name": "Brunswick Store",
+    "address": "107 Sydney Road",
+    "phone": "8388 7084",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C385",
+    "name": "Campbellfield Store",
+    "address": "1716-1718 Sydney Road",
+    "phone": "8199 4211",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C520",
+    "name": "Camperdown Store",
+    "address": "156 Manifold Street",
+    "phone": "5593 1122",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C087",
+    "name": "Carrum Downs Store",
+    "address": "562 Frankston Dandenong Road",
+    "phone": "9770 8669",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C521",
+    "name": "Casterton Store",
+    "address": "35 McPherson Street",
+    "phone": "5581 2161",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C716",
+    "name": "Castlemaine Store",
+    "address": "244 Barker Street",
+    "phone": "5472 4419",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C100",
+    "name": "Chelsea Heights Store",
+    "address": "Unit 1/2 Hartwood Court",
+    "phone": "9773 4047",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C231",
+    "name": "Clayton Store",
+    "address": "370-376 Clayton Road",
+    "phone": "9543 7711",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C718",
+    "name": "Cobram Store",
+    "address": "29-31 Main Street",
+    "phone": "5872 1737",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C894",
+    "name": "Coburg Store",
+    "address": "260 Sydney Road",
+    "phone": "9386 6666",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C523",
+    "name": "Colac Store",
+    "address": "41 Dennis Street",
+    "phone": "5231 2738",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C829",
+    "name": "Cowes Store",
+    "address": "1/144 Thompson Avenue",
+    "phone": "5952 6856",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C232",
+    "name": "Cranbourne Store",
+    "address": "4/218 South Gippsland Highway",
+    "phone": "5996 3926",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C360",
+    "name": "Croydon Store",
+    "address": "38-42 Main Street",
+    "phone": "9723 4116",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C380",
+    "name": "Dandenong Store",
+    "address": "117-119 Lonsdale Street",
+    "phone": "9701 3443",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C527",
+    "name": "Daylesford Store",
+    "address": "26-28 Howe Street",
+    "phone": "5348 3862",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C720",
+    "name": "Eaglehawk Store",
+    "address": "23 High Street",
+    "phone": "5446 9333",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C722",
+    "name": "Echuca Store",
+    "address": "11 Nish Street",
+    "phone": "5482 3568",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C956",
+    "name": "Elsternwick Store",
+    "address": "482A Glenhuntly Road",
+    "phone": "8199 4206",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C909",
+    "name": "Epping Store",
+    "address": "Unit 4, 500 High Street",
+    "phone": "8405 3360",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C382",
+    "name": "Ferntree Gully Store",
+    "address": "Shop 7, 1821 Ferntree Gully Road",
+    "phone": "9758 8501",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C237",
+    "name": "Frankston Store",
+    "address": "80 \u2013 82 Young Street",
+    "phone": "9770 5818",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C118",
+    "name": "Geelong South Store",
+    "address": "162 Fyans Street",
+    "phone": "5229 0911",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C910",
+    "name": "Geelong West Store",
+    "address": "53-55 Pakington Street",
+    "phone": "5222 7785",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C120",
+    "name": "Glenroy Store",
+    "address": "Shop 5, 826 Pascoe Vale Road",
+    "phone": "9300 3276",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C246",
+    "name": "Grovedale Store",
+    "address": "19/147 Marshalltown Rd",
+    "phone": "5243 7468",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C529",
+    "name": "Hamilton Store",
+    "address": "69 Cox Street",
+    "phone": "5572 3568",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C904",
+    "name": "Hamlyn Heights Store",
+    "address": "71-75 Vines Road",
+    "phone": "5277 2046",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C238",
+    "name": "Hampton Store",
+    "address": "497 - 501 Hampton Street",
+    "phone": "9598 6186",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C240",
+    "name": "Hastings Store",
+    "address": "83 High Street",
+    "phone": "5979 4373",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C364",
+    "name": "Hawthorn Store",
+    "address": "254 Auburn Road",
+    "phone": "9818 5456",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C830",
+    "name": "Heyfield Store",
+    "address": "46 Temple Street",
+    "phone": "5148 2358",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C119",
+    "name": "Hoppers Crossing Store",
+    "address": "Unit 12, 10 Costa Drive",
+    "phone": "9748 5010",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C531",
+    "name": "Horsham Store",
+    "address": "7-9 David Street",
+    "phone": "5382 4003",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C724",
+    "name": "Kangaroo Flat Store",
+    "address": "117 -119 High Street",
+    "phone": "5447 8253",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C725",
+    "name": "Kerang Store",
+    "address": "8-10 Victoria Street",
+    "phone": "5452 2508",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C366",
+    "name": "Kew East Store",
+    "address": "735 High Street",
+    "phone": "9859 8685",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C540",
+    "name": "Kilmore Store",
+    "address": "132-134 Powlett Street",
+    "phone": "8199 4203",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C376",
+    "name": "Kilsyth Store",
+    "address": "158 Canterbury Road",
+    "phone": "8199 4213",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C832",
+    "name": "Korumburra Store",
+    "address": "145-147 Commercial Street",
+    "phone": "5658 1103",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C727",
+    "name": "Kyabram Store",
+    "address": "111 Allan Street",
+    "phone": "5852 2874",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C848",
+    "name": "Lakes Entrance Store",
+    "address": "40 Church Street",
+    "phone": "8199 4226",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C834",
+    "name": "Leongatha Store",
+    "address": "10 Peart Street",
+    "phone": "5662 2729",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C367",
+    "name": "Lilydale Store",
+    "address": "250 Main Street",
+    "phone": "9735 4916",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C369",
+    "name": "Malvern Store",
+    "address": "29-31 Glenferrie Road",
+    "phone": "9509 5713",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C729",
+    "name": "Mansfield Store",
+    "address": "8 Baldry Street",
+    "phone": "5775 2878",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C533",
+    "name": "Maryborough Store",
+    "address": "54 High Street",
+    "phone": "5460 4871",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C122",
+    "name": "Melton Store",
+    "address": "51 Unitt Street",
+    "phone": "9743 0942",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C907",
+    "name": "Mentone Store",
+    "address": "34 Nepean highway",
+    "phone": "9585 6211",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C535",
+    "name": "Mildura Store",
+    "address": "79 Lime Ave",
+    "phone": "5023 5750",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C836",
+    "name": "Moe Store",
+    "address": "24-26 Fowler Street",
+    "phone": "5127 6995",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C381",
+    "name": "Mont Albert Store",
+    "address": "24-26 Hamilton Street",
+    "phone": "9898 0720",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C239",
+    "name": "Moorabbin Store",
+    "address": "261-263 Wickham Road",
+    "phone": "9555 1623",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C731",
+    "name": "Mooroopna Store",
+    "address": "2 Northgate Street",
+    "phone": "5825 1888",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C242",
+    "name": "Mornington Store",
+    "address": "184 Main Street",
+    "phone": "5975 4166",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C245",
+    "name": "Mornington-Tyabb Store",
+    "address": "175-179 Mornington Tyabb Road",
+    "phone": "5976 8526",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C838",
+    "name": "Morwell Store",
+    "address": "15 Tarwin Street",
+    "phone": "5134 2628",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C123",
+    "name": "Newport Store",
+    "address": "3 - 5 Mason Street",
+    "phone": "9391 7090",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C733",
+    "name": "Numurkah Store",
+    "address": "98-100 Melville Street",
+    "phone": "5862 2650",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C371",
+    "name": "Oakleigh Store",
+    "address": "20 Crewe Road",
+    "phone": "9568 1034",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C125",
+    "name": "Ocean Grove Store",
+    "address": "16-18 Marine Parade",
+    "phone": "5256 2050",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C243",
+    "name": "Pakenham Store",
+    "address": "Shop 1, 70 Main Street",
+    "phone": "5941 7982",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C353",
+    "name": "Port Melbourne Store",
+    "address": "276-278 Bay Street",
+    "phone": "9646 4680",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C900",
+    "name": "Preston Store",
+    "address": "596-598 Plenty Road",
+    "phone": "9478 6845",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C127",
+    "name": "Queenscliff Store",
+    "address": "31 Hesse Street",
+    "phone": "5258 2273",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C141",
+    "name": "Reservoir Store",
+    "address": "10 Edwardes Street",
+    "phone": "8199 4215",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C377",
+    "name": "Ringwood Store",
+    "address": "76-82 Maroondah Highway",
+    "phone": "9870 9124",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C906",
+    "name": "Rosebud Store",
+    "address": "1057-1061 Point Nepean Road",
+    "phone": "5986 2483",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C840",
+    "name": "Sale Store",
+    "address": "192-194 York Street",
+    "phone": "5144 4183",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C542",
+    "name": "Sebastopol Store",
+    "address": "112-114 Albert St.",
+    "phone": "5335 7466",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C130",
+    "name": "Seymour Store",
+    "address": "5 Wallis Street",
+    "phone": "5792 4094",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C737",
+    "name": "Shepparton Store",
+    "address": "274 Maude Street",
+    "phone": "5821 5870",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C955",
+    "name": "South Morang Store",
+    "address": "Unit 4 / 20 Murdoch Road",
+    "phone": "9436 5658",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C379",
+    "name": "Springvale Store",
+    "address": "119-123 Springvale Road,",
+    "phone": "9546 3715",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C133",
+    "name": "St Albans Store",
+    "address": "71 Main Road West",
+    "phone": "9366 2590",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C543",
+    "name": "St Arnaud Store",
+    "address": "35- Napier",
+    "phone": "5495 3100",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C131",
+    "name": "Sunbury Store",
+    "address": "156 O'Shannessy Street",
+    "phone": "9744 1447",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C736",
+    "name": "Swan Hill Store",
+    "address": "140 Curlewis Street",
+    "phone": "5032 2632",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C738",
+    "name": "Tatura Store",
+    "address": "3 Francis Street",
+    "phone": "5824 1443",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C920",
+    "name": "Thomastown Store",
+    "address": "Unit 1, 256 Settlement Road",
+    "phone": "8199 4233",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C386",
+    "name": "Thornbury Store",
+    "address": "885 High Street",
+    "phone": "8199 4235",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C842",
+    "name": "Traralgon Store",
+    "address": "70 Argyle Street",
+    "phone": "5174 4026",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C740",
+    "name": "Wangaratta Store",
+    "address": "36-38 Rowan Street",
+    "phone": "5721 5742",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "C844",
+    "name": "Warragul Store",
+    "address": "14 Gladstone Street",
+    "phone": "5623 4582",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C545",
+    "name": "Warrnambool Store",
+    "address": "178 Fairy Street",
+    "phone": "5562 5274",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C548",
+    "name": "Wendouree Store",
+    "address": "1255 Howitt Street",
+    "phone": "5339 4817",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C846",
+    "name": "Wonthaggi Store",
+    "address": "100 Graham Street",
+    "phone": "5672 3445",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "C744",
+    "name": "Yarrawonga Store",
+    "address": "139-141 Belmore Street",
+    "phone": "5744 3083",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "S065",
+    "name": "Box Hill (GWH)",
+    "address": "43 Prospect Street",
+    "phone": "9895 5910",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C092",
+    "name": "Dandenong Warehouse",
+    "address": "32-36 Bessemer Drive",
+    "phone": "0400 646 912",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "C086",
+    "name": "Altona Warehouse",
+    "address": "99-101 Dohertys Road",
+    "phone": "0400 802 550",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "M927",
+    "name": "Fitzroy Mobile Assistance Centre",
+    "address": "176 Brunswick Street",
+    "phone": "0488 903934",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "M871",
+    "name": "Bairnsdale Assistance Centre",
+    "address": "92 Macleod Street",
+    "phone": "0448 525 462",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "M745",
+    "name": "Bendigo Assistance Centre",
+    "address": "14 - 16 Hopetoun Street",
+    "phone": "0429 175 735",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M754",
+    "name": "Castlemaine Assistance Centre",
+    "address": "257 Barker Street",
+    "phone": "5473 3366",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "M760",
+    "name": "Heathcote Assistance Centre",
+    "address": "155 High Street",
+    "phone": "",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M762",
+    "name": "Cobram Assistance Centre",
+    "address": "27 Main Street",
+    "phone": "0428 324 421",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M764",
+    "name": "Kyabram Assistance Centre",
+    "address": "178C Allan Street",
+    "phone": "0402 358 221",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M778",
+    "name": "Rochester Assistance Centre",
+    "address": "72 Moore Street",
+    "phone": "0408 841 080",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "M779",
+    "name": "Swan Hill Assistance Centre",
+    "address": "272 Campbell Street",
+    "phone": "0427 372 802",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "M798",
+    "name": "Benalla Assistance Centre",
+    "address": "54A Carrier Street",
+    "phone": "",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M574",
+    "name": "Camperdown Assistance Centre",
+    "address": "158 Manifold Street",
+    "phone": "",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "M596",
+    "name": "Mildura Assistance Centre",
+    "address": "109 Pine Avenue",
+    "phone": "0409 434 754",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "M625",
+    "name": "St Arnaud Assistance Centre",
+    "address": "7 Jones Street",
+    "phone": "0417 615354",
+    "rotation": "Mar, Jun, Sep, Dec"
+  },
+  {
+    "cc": "M170",
+    "name": "Seymour Assistance Centre",
+    "address": "Shop 2, 76 Anzac Avenue",
+    "phone": "0418 360 909",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M853",
+    "name": "Traralgon Assistance Centre",
+    "address": "43 Kay Street, Traralgon",
+    "phone": "0448 313 040",
+    "rotation": "Jan, Apr, Jul, Oct"
+  },
+  {
+    "cc": "M804",
+    "name": "Yarrawonga Assistance Centre",
+    "address": "Tenancy 4, 3 Witt Street",
+    "phone": "0409 561 545",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M768",
+    "name": "Shepparton Assistance Centre",
+    "address": "209-211 Wyndham Street",
+    "phone": "0434 244 940",
+    "rotation": "Feb, May, Aug, Nov"
+  },
+  {
+    "cc": "M470",
+    "name": "Mooroolbark Assistance Centre",
+    "address": "234 Hull Rd",
+    "phone": "0417 335 763",
+    "rotation": "Feb, May, Aug, Nov"
+  }
+]

@@ -1,4 +1,10 @@
-const FORM_BASE = 'https://esm-forms.netlify.app/form.html';
+const FORM_BASE  = 'https://esm-forms.netlify.app/form.html';
+const SITES_URL  = 'https://esm-forms.netlify.app/sites.json';
+
+const MONTH_MAP = {
+  JAN:'Jan', FEB:'Feb', MAR:'Mar', APR:'Apr', MAY:'May', JUN:'Jun',
+  JUL:'Jul', AUG:'Aug', SEP:'Sep', OCT:'Oct', NOV:'Nov', DEC:'Dec',
+};
 
 async function asana(path, method = 'GET', body = null) {
   const opts = {
@@ -33,28 +39,37 @@ exports.handler = async (event) => {
     );
     if (!task?.completed) continue;
 
-    // Match "START RUN — WO12345 — ESMPM" (flexible separators)
-    const match = task.name.match(/^START\s+RUN\s*[-—]+\s*(WO\S+)\s*[-—]+\s*(\S+)/i);
+    // Match "START RUN - WO45855 - ESM - APR"
+    const match = task.name.match(/^START\s+RUN\s*[-—]+\s*(WO\S+)\s*[-—]+\s*(\S+)\s*[-—]+\s*([A-Z]{3})/i);
     if (!match) continue;
 
-    const woNumber = match[1];
-    const scope    = match[2].toUpperCase();
+    const woNumber   = match[1].toUpperCase();
+    const scope      = match[2].toUpperCase();
+    const monthCode  = match[3].toUpperCase();
+    const monthName  = MONTH_MAP[monthCode];
     const projectGid = task.memberships?.[0]?.project?.gid;
-    if (!projectGid) continue;
+    if (!projectGid || !monthName) continue;
 
-    const { data: tasks } = await asana(
-      `/projects/${projectGid}/tasks?opt_fields=name,notes`
-    );
+    // Load site register
+    const sitesRes = await fetch(SITES_URL);
+    const allSites = await sitesRes.json();
+    const sites = allSites.filter(s => s.rotation.includes(monthName));
 
-    for (const t of (tasks || [])) {
+    // Delete existing store tasks (not SETUP or START RUN)
+    const { data: existing } = await asana(`/projects/${projectGid}/tasks?opt_fields=name,gid`);
+    for (const t of (existing || [])) {
       if (/^SETUP:/i.test(t.name) || /^START\s+RUN/i.test(t.name)) continue;
+      await asana(`/tasks/${t.gid}`, 'DELETE');
+    }
 
-      const cc   = (t.notes?.match(/CC:\s*(\S+)/)?.[1] || 'XX');
-      const site = (t.name.match(/—\s*(.+)$/)?.[1]?.trim() || t.name);
-      const url  = `${FORM_BASE}?cc=${encodeURIComponent(cc)}&site=${encodeURIComponent(site)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}`;
-
-      await asana(`/tasks/${t.gid}`, 'PUT', {
-        notes: `${url}\n\n${t.notes || ''}`.trim(),
+    // Create new task per site with form URL
+    for (const site of sites) {
+      const url   = `${FORM_BASE}?cc=${encodeURIComponent(site.cc)}&site=${encodeURIComponent(site.name)}&scope=${scope}&wo=${encodeURIComponent(woNumber)}`;
+      const notes = `${url}\n\nAddress: ${site.address}\nPhone: ${site.phone}\nCC: ${site.cc}`;
+      await asana('/tasks', 'POST', {
+        name:         `${site.cc} — ${site.name}`,
+        notes,
+        projects:     [projectGid],
       });
     }
   }
